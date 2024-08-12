@@ -14,11 +14,13 @@ import (
 
 // Define the receiver struct with the desired parameters for your receiver.
 type oteltestReceiver struct {
-	host component.Host
-	cancel context.CancelFunc
+	// host component.Host
+	// cancel context.CancelFunc
 	config *Config
 	logger *zap.Logger
 	nextConsumer consumer.Logs
+	component.StartFunc
+	component.ShutdownFunc
 }
 
 
@@ -30,19 +32,20 @@ type oteltestReceiver struct {
 func (c *oteltestReceiver) Capabilities() consumer.Capabilities {
 	return consumer.Capabilities{MutatesData: false}
 }
-// Start implements the consumer interface.
-func (c *oteltestReceiver) Start(ctx context.Context, host component.Host) error {
-	c.host = host
-	ctx = context.Background()
-	return nil
-}
-// Shutdown implements the consumer interface.
-func (c *oteltestReceiver) Shutdown(ctx context.Context) error {
-	if c.cancel != nil {
-		c.cancel()
-	}
-	return nil
-}
+// // Start implements the consumer interface.
+// func (c *oteltestReceiver) Start(ctx context.Context, host component.Host) error {
+// 	c.host = host
+// 	ctx = context.Background()
+// 	return nil
+// }
+// // Shutdown implements the consumer interface.
+// func (c *oteltestReceiver) Shutdown(ctx context.Context) error {
+// 	if c.cancel != nil {
+// 		c.cancel()
+// 	}
+// 	return nil
+// }
+
 // ConsumeLogs implements the consumer interface.
 func (c *oteltestReceiver) ConsumeLogs(ctx context.Context, ld consumer.Logs) error {
 	return nil
