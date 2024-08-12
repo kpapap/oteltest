@@ -37,9 +37,16 @@ func createDefaultConfig() component.Config {
 	}
 }
 
+
 // Define the type of the receiver
-func createLogsReceiver(ctx context.Context, set Settings, cfg component.Config, nextConsumer consumer.Logs,) (Logs, error) {
-	return nil, nil
+func createLogsReceiver(ctx context.Context, set receiver.Settings, cfg component.Config, nextConsumer consumer.Logs) (receiver.Logs, error) {
+	// Create the new receiver
+	logs := &oteltestReceiver{
+			config:       cfg.(*Config),
+			nextConsumer: nextConsumer,
+			logger:       set.Logger,
+	}
+	return logs, nil
 }
 
 // Write a NewFactory function that instantiates your custom factory for your connector(component).
@@ -47,5 +54,6 @@ func NewFactory() receiver.Factory {
 	return receiver.NewFactory(
 		typeStr,
 		createDefaultConfig,
-		receiver.WithTraces(createLogsReceiver, component.StabilityLevelAlpha))
+		receiver.WithLogs(createLogsReceiver, component.StabilityLevelAlpha))
 }
+
