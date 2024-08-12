@@ -23,8 +23,6 @@ type oteltestReceiver struct {
 	component.ShutdownFunc
 }
 
-
-
 // Implement the methods from the interface baseConsumer.
 
 // Implement the methods from the interface component specific to the type of the component.
